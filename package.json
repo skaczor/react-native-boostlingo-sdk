@@ -1,0 +1,9 @@
+{
+  "name": "react-native-boostlingo-sdk",
+  "version": "0.0.1",
+  "description": "Wrapper for BoostlingoSDK",
+  "main": "src/index",
+  "author": "Simon Kaczor <skaczor@prognosoft.biz>",
+  "license": "MIT",
+  "homepage": "#readme"
+}
