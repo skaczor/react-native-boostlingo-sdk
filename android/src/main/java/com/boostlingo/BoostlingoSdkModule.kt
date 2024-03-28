@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.HttpException
 import kotlin.properties.Delegates
+import android.util.Log
 
 class BoostlingoSdkModule(
   reactContext: ReactApplicationContext
@@ -31,6 +32,7 @@ class BoostlingoSdkModule(
   }
 
   fun setLocalVideo(videoView: VideoView?) {
+    Log.d("ReactNativeJS", "setLocalVideo called")
     localVideoView = videoView
   }
 
@@ -39,6 +41,7 @@ class BoostlingoSdkModule(
       boostlingo?.getCurrentCall()
         ?.let {
           if (it is BLVideoCall) {
+            Log.d("ReactNativeJS", "Adding remote renderer to current call with identity ${identity}")
             it.addRenderer(identity, videoView)
           }
         }
@@ -164,9 +167,10 @@ class BoostlingoSdkModule(
   }
 
   private fun handleError(t: Throwable) {
+    Log.w("ReactNativeJS", "BoostlingoSdk handleError", t);
     reactApplicationContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      .emit("error", cause(t).localizedMessage)
+      .emit("error", "${cause(t).localizedMessage} [${cause(t).javaClass.toString()}]")
   }
 
   private fun startAudioSwitch() {
@@ -613,6 +617,8 @@ class BoostlingoSdkModule(
         isVideo = true,
         data = if (request.hasKey("data")) mapAdditionalCallData(request.getArray("data")) else null
       )
+
+      startAudioSwitch()
 
       boostlingo!!.makeVideoCall(calRequest, localVideoView)
         .subscribeOn(AndroidSchedulers.mainThread())
