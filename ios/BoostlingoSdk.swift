@@ -312,6 +312,7 @@ class BoostlingoSdk: RCTEventEmitter, BLCallDelegate, BLChatDelegate {
     func makeVoiceCall(_ request: NSDictionary, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         do {
             var data: [AdditionalField]? = nil
+            var fieldData: [CustomFieldDto] = []
             if let dataArray = request["data"] as? NSArray {
                 dataArray.map { $0 as! [String: String] }
                     .map {
@@ -328,7 +329,8 @@ class BoostlingoSdk: RCTEventEmitter, BLCallDelegate, BLChatDelegate {
                 serviceTypeId: request["serviceTypeId"] as! Int, 
                 genderId: request["genderId"] as? Int, 
                 isVideo: false,
-                data: data
+                data: data,
+                fieldData: fieldData
             )
 
             self.boostlingo!.chatDelegate = self
@@ -361,6 +363,7 @@ class BoostlingoSdk: RCTEventEmitter, BLCallDelegate, BLChatDelegate {
     func makeVideoCall(_ request: NSDictionary, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         do {
             var data: [AdditionalField]? = nil
+            var fieldData: [CustomFieldDto] = []
             if let dataArray = request["data"] as? NSArray {
                 dataArray.map { $0 as! [String: String] }
                     .map {
@@ -377,7 +380,8 @@ class BoostlingoSdk: RCTEventEmitter, BLCallDelegate, BLChatDelegate {
                 serviceTypeId: request["serviceTypeId"] as! Int, 
                 genderId: request["genderId"] as? Int, 
                 isVideo: true,
-                data: data
+                data: data,
+                fieldData: fieldData
             )
 
             self.boostlingo!.chatDelegate = self
